@@ -29,3 +29,11 @@ jobs:
           git add rom-export/
           git commit -m "Export ROM as Base64 chunks" || echo "No changes"
           git push
+
+      - name: Upload original ROM for analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: 2006aemiat-rom
+          path: 2006aemiat.bin
+          if-no-files-found: error
+          retention-days: 7
