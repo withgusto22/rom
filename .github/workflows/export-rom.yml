@@ -1,0 +1,31 @@
+
+name: Export ROM as Base64
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Convert ROM to Base64 chunks
+        run: |
+          mkdir -p rom-export
+          base64 -w 0 2006aemiat.bin > rom-export/rom-base64.txt
+          split -b 50000 -d -a 4 rom-export/rom-base64.txt rom-export/chunk-
+          rm rom-export/rom-base64.txt
+
+      - name: Commit exported chunks
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rom-export/
+          git commit -m "Export ROM as Base64 chunks" || echo "No changes"
+          git push
