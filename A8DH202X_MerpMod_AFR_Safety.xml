@@ -99,9 +99,9 @@
 
   <!-- Wideband AFR Safety: 4x4 table cells are uint16 AFR x 100.
        X axis is engine load; Y axis is engine speed. -->
-  <table name="Wideband AFR Safety Threshold" address="E253C" type="3D" scaling="AFR_x100">
-    <table name="X" address="E251C" type="X Axis" elements="4" scaling="AFR_Load_Float" />
-    <table name="Y" address="E252C" type="Y Axis" elements="4" scaling="AFR_RPM_Float" />
+  <table name="Wideband AFR Safety Threshold" address="E253C" scaling="AFR_x100">
+    <table name="X" address="E251C" elements="4" scaling="AFR_Load_Float" />
+    <table name="Y" address="E252C" elements="4" scaling="AFR_RPM_Float" />
   </table>
   <table name="Wideband Safety Pedal Release Threshold" address="E24E8" scaling="PedalRelease_Float" />
 </rom>
