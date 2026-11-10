@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A8DH202X MerpMod AFR Safety extension
+  Extends the existing USDM 2006 WRX A8DH202X ECUFlash definition.
+  Intended for the matching manual-assembly candidate only.
+  Do not use against an unmodified stock ROM.
+-->
+<rom>
+  <romid>
+    <xmlid>A8DH202X_AFRSAFE</xmlid>
+    <internalidaddress>E1400</internalidaddress>
+    <internalidstring>A8DH202X.MeRpMoD.Gratis.Testing.v13.4.27.1823</internalidstring>
+    <ecuid>134271823F</ecuid>
+    <make>Subaru</make>
+    <market>USDM</market>
+    <model>Impreza</model>
+    <submodel>WRX</submodel>
+    <transmission>MT</transmission>
+    <year>06</year>
+    <flashmethod>sti05</flashmethod>
+    <memmodel>SH7058</memmodel>
+    <checksummodule>subarudbw</checksummodule>
+  </romid>
+
+  <include>A8DH202X.MeRpMoD.Gratis.Testing.v13.4.27.1823</include>
+
+  <!-- AFR cells are unsigned 16-bit big-endian, stored as AFR x 100. -->
+  <scaling name="AFR_x100"
+           units="AFR"
+           toexpr="x*.01"
+           frexpr="x*100"
+           format="%.2f"
+           min="10.00"
+           max="25.00"
+           inc="0.01"
+           storagetype="uint16"
+           endian="big" />
+
+  <!-- The two axis arrays and pedal threshold are IEEE-754 float32 big-endian. -->
+  <scaling name="AFR_LoadAxis_Float"
+           units="Engine Load"
+           toexpr="x"
+           frexpr="x"
+           format="%.3f"
+           min="0"
+           max="5"
+           inc="0.01"
+           storagetype="float"
+           endian="big" />
+
+  <scaling name="AFR_RPMAxis_Float"
+           units="RPM"
+           toexpr="x"
+           frexpr="x"
+           format="%.0f"
+           min="0"
+           max="10000"
+           inc="50"
+           storagetype="float"
+           endian="big" />
+
+  <scaling name="PedalRelease_Float"
+           units="Accelerator Pedal Angle"
+           toexpr="x"
+           frexpr="x"
+           format="%.2f"
+           min="0"
+           max="100"
+           inc="0.1"
+           storagetype="float"
+           endian="big" />
+
+  <!--
+    The table data is at E253C. X is load; Y is RPM.
+    The runtime ThreeDTable descriptor at E2500 points to these arrays.
+  -->
+  <table name="Wideband AFR Safety Threshold"
+         address="e253c"
+         scaling="AFR_x100">
+    <table name="Engine Load"
+           address="e251c"
+           elements="4"
+           scaling="AFR_LoadAxis_Float" />
+    <table name="Engine Speed"
+           address="e252c"
+           elements="4"
+           scaling="AFR_RPMAxis_Float" />
+  </table>
+
+  <!--
+    This float is used by the wrapper to clear the lean latch on pedal release.
+    Its current 1.00 value is provisional and must be validated against a live
+    released-pedal log before changing or relying on it.
+  -->
+  <table name="Wideband Safety Pedal Release Threshold"
+         address="e24e8"
+         scaling="PedalRelease_Float" />
+</rom>
