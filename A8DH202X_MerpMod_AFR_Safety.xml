@@ -1,98 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  A8DH202X MerpMod AFR Safety extension
-  Extends the existing USDM 2006 WRX A8DH202X ECUFlash definition.
-  Intended for the matching manual-assembly candidate only.
-  Do not use against an unmodified stock ROM.
--->
-<rom>
-  <romid>
-    <xmlid>A8DH202X_AFRSAFE</xmlid>
-    <internalidaddress>E1400</internalidaddress>
-    <internalidstring>A8DH202X.MeRpMoD.Gratis.Testing.v13.4.27.1823</internalidstring>
-    <ecuid>134271823F</ecuid>
-    <make>Subaru</make>
-    <market>USDM</market>
-    <model>Impreza</model>
-    <submodel>WRX</submodel>
-    <transmission>MT</transmission>
-    <year>06</year>
-    <flashmethod>sti05</flashmethod>
-    <memmodel>SH7058</memmodel>
-    <checksummodule>subarudbw</checksummodule>
-  </romid>
 
-  <include>A8DH202X.MeRpMoD.Gratis.Testing.v13.4.27.1823</include>
+-<rom>
 
-  <!-- AFR cells are unsigned 16-bit big-endian, stored as AFR x 100. -->
-  <scaling name="AFR_x100"
-           units="AFR"
-           toexpr="x*.01"
-           frexpr="x*100"
-           format="%.2f"
-           min="10.00"
-           max="25.00"
-           inc="0.01"
-           storagetype="uint16"
-           endian="big" />
 
-  <!-- The two axis arrays and pedal threshold are IEEE-754 float32 big-endian. -->
-  <scaling name="AFR_LoadAxis_Float"
-           units="Engine Load"
-           toexpr="x"
-           frexpr="x"
-           format="%.3f"
-           min="0"
-           max="5"
-           inc="0.01"
-           storagetype="float"
-           endian="big" />
+-<romid>
 
-  <scaling name="AFR_RPMAxis_Float"
-           units="RPM"
-           toexpr="x"
-           frexpr="x"
-           format="%.0f"
-           min="0"
-           max="10000"
-           inc="50"
-           storagetype="float"
-           endian="big" />
+<xmlid>A8DH202X.MeRpMoD.Gratis.Testing.v13.4.27.1823</xmlid>
 
-  <scaling name="PedalRelease_Float"
-           units="Accelerator Pedal Angle"
-           toexpr="x"
-           frexpr="x"
-           format="%.2f"
-           min="0"
-           max="100"
-           inc="0.1"
-           storagetype="float"
-           endian="big" />
+<internalidaddress>E1400</internalidaddress>
 
-  <!--
-    The table data is at E253C. X is load; Y is RPM.
-    The runtime ThreeDTable descriptor at E2500 points to these arrays.
-  -->
-  <table name="Wideband AFR Safety Threshold"
-         address="e253c"
-         scaling="AFR_x100">
-    <table name="Engine Load"
-           address="e251c"
-           elements="4"
-           scaling="AFR_LoadAxis_Float" />
-    <table name="Engine Speed"
-           address="e252c"
-           elements="4"
-           scaling="AFR_RPMAxis_Float" />
-  </table>
+<internalidstring>A8DH202X.MeRpMoD.Gratis.Testing.v13.4.27.1823</internalidstring>
 
-  <!--
-    This float is used by the wrapper to clear the lean latch on pedal release.
-    Its current 1.00 value is provisional and must be validated against a live
-    released-pedal log before changing or relying on it.
-  -->
-  <table name="Wideband Safety Pedal Release Threshold"
-         address="e24e8"
-         scaling="PedalRelease_Float" />
+<ecuid>134271823F</ecuid>
+
+<year>06</year>
+
+<market>USDM</market>
+
+<make>Subaru</make>
+
+<model>Impreza</model>
+
+<submodel>WRX</submodel>
+
+<transmission>MT</transmission>
+
+<memmodel>SH7058</memmodel>
+
+<flashmethod>sti05</flashmethod>
+
+<checksummodule>subarudbw</checksummodule>
+
+</romid>
+
+<include>A8DH202X</include>
+
+<table address="CFB8C" name="ECU Identifier"/>
+
+<table address="C23B8" name="Engine Load Smoothing Factor A"/>
+
+<table address="C23BC" name="Engine Load Smoothing Factor B"/>
+
+<table address="C23C8" name="Engine Load Smoothing Factor Final"/>
+
+
+-<table address="E1698" name="Volumetric Efficiency Table 1">
+
+<table address="E15D8" name="X" elements="24"/>
+
+<table address="E1638" name="Y" elements="24"/>
+
+</table>
+
+
+-<table address="E1B6C" name="Atmospheric Pressure Compensation">
+
+<table address="E1B34" name="X" elements="7"/>
+
+<table address="E1B50" name="Y" elements="7"/>
+
+</table>
+
+
+-<table address="E1C3C" name="SD Blending Table">
+
+<table address="E1BEC" name="X" elements="10"/>
+
+<table address="E1C14" name="Y" elements="10"/>
+
+</table>
+
+<table address="E15D4" name="Engine Displacement"/>
+
+<table address="E15C8" name="Speed Density Mode"/>
+
+<table address="E15D0" name="Speed Density Constant"/>
+
+<table address="E1CC4" name="Rev Limit (Redline)"/>
+
+<table address="E1CC0" name="Flat Foot Shift Mode"/>
+
+<table address="E1CD0" name="Flat Foot Shift Delta (Automatic Limit)"/>
+
+<table address="E1CD4" name="Flat Foot Shift Delta (Static Limit)"/>
+
+<table address="E1CD8" name="Flat Foot Shift Minimum Speed Threshold"/>
+
+<table address="E1CDC" name="Flat Foot Shift Minimum RPM Threshold"/>
+
+<table address="E1CE0" name="LC Maximum Speed Threshold"/>
+
+<table address="E1D08" name="LC Minimum Throttle Threshold"/>
+
+<table address="E1D0C" name="FFS Minimum Throttle Threshold"/>
+
+<table address="E1CF0" name="FFS Gear Ratios"/>
+
+<table address="E1CE4" name="Rev Limit (Launch Control)"/>
+
+<table address="c82dc" name="Minimum IPW"/>
+
+
+-<table address="cf000" name="Knock Sensor Calibration">
+
+<table address="cef18" name="Volts" elements="58"/>
+
+</table>
+
+
+-<table address="cf110" name="Knock Threshold Filter Final Limit Minimum">
+
+<table address="cf0e8" name="Volts"/>
+
+</table>
+
+
+-<table address="cf160" name="Knock Threshold Filter Final Limit Maximum Cylinder 1">
+
+<table address="cf138" name="Volts"/>
+
+</table>
+
+
+-<table address="cf1b0" name="Knock Threshold Filter Final Limit Maximum Cylinder 2">
+
+<table address="cf188" name="Volts"/>
+
+</table>
+
+
+-<table address="cf200" name="Knock Threshold Filter Final Limit Maximum Cylinder 3">
+
+<table address="cf1d8" name="Volts"/>
+
+</table>
+
+
+-<table address="cf250" name="Knock Threshold Filter Final Limit Maximum Cylinder 4">
+
+<table address="cf228" name="Volts"/>
+
+</table>
+
+
+-<table address="ceaf4" name="Knock Threshold Filter Background Noise interval Weighting Factor Low RPM Delta">
+
+<table address="cead8" name="Engine Speed"/>
+
+</table>
+
+<table address="ce980" name="Background Noise Delta Smoothing Weighting Factor RPM Delta Threshold Immediate"/>
+
+<table address="ce984" name="Background Noise Delta Smoothing Weighting Factor RPM Delta Threshold Short"/>
+
+<table address="ce988" name="Background Noise Base Smoothing Factor High Rpm Delta"/>
+
+<table address="ce990" name="Background Noise Base Smoothing Factor Low Rpm Delta"/>
+
+<table address="ce994" name="Background Noise Delta Weighting Factor High RPM Delta"/>
+
+<table address="ce98c" name="Background Noise Delta Weighting Factor Low RPM Delta"/>
+
+<table address="ce998" name="Knock Threshhold Filter Background Noise Interval Weighting Factor RPM Delta Short"/>
+
+<table address="ce99c" name="Knock Threshhold Filter Background Noise Interval Weighting Factor High RPM Delta Limit Maximum"/>
+
+<table address="ce9a0" name="Knock Threshhold Filter Background Noise Interval Weighting Factor High RPM Delta RPM Delta Ratio"/>
+
+<table address="ce9a4" name="Knock threshhold Filter Final Limit Maximum Modify Pre Final Limit"/>
+
+<table address="ce9a8" name="Knock Threshhold Level Final Limit Minimum"/>
+
+<table address="ce9ac" name="Knock Threshhold Level Final Limit Maximum"/>
+
+
+-<table address="c8d5c" name="Low Pulse Width Fuel Injector Compensation">
+
+<table address="c8d3c" name="Injector Pulse Width"/>
+
+</table>
+
+<table address="c873c" name="Low pulse width fuel injector compensation maximum RPM"> </table>
+
+<table address="c8740" name="Low pulse width fuel injector compensation maximum IPW"> </table>
+
 </rom>
